@@ -103,20 +103,20 @@ def game_win():  # If the player wins, they are shown the actual word and asked 
         ''')
     print("Do you want to play again?(Say yes or no)")
     answer = get_audio()
-    if answer == 'yes':  # sees this: _ _ _ and not this:['_', '_', '_']
+    if answer == 'yes':
         start_game()
     elif answer == 'no':
         print("Bye!")
         time.sleep(1)
-        sys.exit()  # Exits the program if the user does not want to play again
+        sys.exit()
     else:
         print("Input not recognized. Please try again.")
         game_win()
 
 
 # This function turns the letters in
-def underscore_maker(choice, word_separation, reference_list):
-    for letter in choice:                                       # the word to underscores
+def underscore_maker(choice, word_separation, reference_list): # Prints an underscore for each letter in the word
+    for letter in choice: 
         word_separation.append('_ ')
     for letters in choice:
         reference_list.append(letters)
@@ -127,12 +127,10 @@ def get_audio():
     with sr.Microphone() as source:
         audio = r.listen(source)
         said = ""
-
         try:
             said = r.recognize_google(audio)
         except Exception as e:
             print("Not recognized" + str(e))
-
         return said
 
 
@@ -171,7 +169,7 @@ def main(lives, word_separation, choice, guessed_letters, reference_list, x):  #
             letter_guess = modified.lower()
             print(letter_guess)
 
-            if len(letter_guess) > 1:
+            if len(letter_guess) > 1: # input validation
                 print("Too many letters")
                 guessed_letters.pop()
                 continue
@@ -190,15 +188,12 @@ def main(lives, word_separation, choice, guessed_letters, reference_list, x):  #
                 print("Letter not found!")
                 lives -= 1
                 # Code logic to match the letter starts here
-            # We need to loop the guessed letter against all letters
             for i in range(len(choice)):
-                # in the chosen word this is to check for duplicate letters
                 if letter_guess in choice[i]:
                     word_separation[i] = letter_guess
 
             if word_separation == reference_list:  # If the chosen word is same as what got entered,
-
-                print(choice)  # end the game and show the result
+                print(choice)                      # end the game and show the result
                 print("You Won!")
                 game_win()
 
